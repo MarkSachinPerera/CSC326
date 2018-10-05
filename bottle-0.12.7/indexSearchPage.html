@@ -1,7 +1,73 @@
-<head> 
+<head>
+<style> 
+
+body{
+  background: #FFF;
+  font-family: Roboto;
+}
+
+.wrapper{
+  position: absolute;
+  top: 65%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+}
+
+.input{
+
+  width: 350px;
+  border: 3px solid red;
+  background: #E0E6F8;
+  padding: 15px 30px; 
+  border: 0; 
+  border-radius: 20px;
+  outline: none; 
+  color: #111; 
+  font-size: 10 px;
+  outline: none;
+  
+}
+
+.search_button{ 
+  top :  0 px; 
+  right: 0px; 
+  cursor: pointer; 
+  width: 75px; 
+  height: 50px; 
+  background: #5882FA;
+  border: #000;
+  border-radius: 20px; 
+  outline: none;
+  text-transform: uppercase;
+  font-size:12px;
+  color: #fff;
+  font-weight: bold;  
+  
+}
+
+img { 
+    position: absolute; 
+top: 25%;
+left:27%;
+}
+
+</style> 
+
+</head> 
+
+<body> 
+	<img src="/static/TARK.jpg" alt="TARK Icon"  style="width:500px;height:300px;">
+	
+	
+ 
 	<form action="/results" method="post">
-    Search Here: <input name="searchKey" type="search" />
-    <input value="Search" type="submit" />
+	<div class="wrapper"> 
+    <div class="container">
+	<input name="searchKey" class="input" placeholder="What are you looking for today" type="text" />
+    <input value="Search" type="submit" class="search_button" />
 	</form>
+	</div> 
+	</div> 
+	
 	<!-- Basic code for the search bar -->
-</head>
+</body>

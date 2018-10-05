@@ -7,6 +7,10 @@ def welcome_page():
     #the web famework will launch the above page as the intro page
 
 
+@route('/static/<filename>')
+def server_static(filename):
+    return static_file (filename, root='./myfiles')
+
 
 @route('/results', method='POST')
 def returnResults():
