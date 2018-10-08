@@ -23,7 +23,8 @@ def returnResults():
 
 	#return 2 values the whole search and the split
 	#return template('{{key}}', key = keyWordCount)
-	return template('searchResultPage.html', searchResult = searchKey,
-		displayArray = keyWordCount)
+	# return template('searchResultPage.html', searchResult = searchKey,
+	# 	displayArray = keyWordCount)
+	return keyWordCount
 
 run(host='localhost', port=8080, debug=True)
