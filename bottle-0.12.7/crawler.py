@@ -114,6 +114,7 @@ class crawler(object):
         self._URL_v_Document_ID = {}
         #Keep _Doc_ID_v_Word_Set
         self._Doc_ID_v_Word_Set_string = {}
+        self._Doc_url_v_Word_Set_string = {}
         self._Doc_ID_v_Word_Set_ID = {}
         #changing wordset Variable that will work with dict above
         self._word_Set_ID = []
@@ -234,7 +235,8 @@ class crawler(object):
         #       knowing self._curr_doc_id and the list of all words and their
         #       font sizes (in self._curr_words), add all the words into the
         #       database for this document
-        self._Doc_ID_v_Word_Set_string[self._curr_url] = self._word_Set_String
+        self._Doc_ID_v_Word_Set_string[self._curr_doc_id] = self._word_Set_String; 
+        self._Doc_url_v_Word_Set_string[self._curr_url] = self._word_Set_String
         self._Doc_ID_v_Word_Set_ID[self._curr_doc_id] = self._word_Set_ID
         #self._in_words = 0
         print "    num words="+ str(len(self._curr_words))
@@ -355,9 +357,10 @@ class crawler(object):
         inverted_index = {}
         doc_id_set = []
 
-        for i in self._Lexicon.keys():
+        #check if each word id is the the word set link to the doc id
+        #add it to the final return var
 
-            # print "here2 i:%s" % i
+        for i in self._Lexicon.keys():
 
             for k in self._Doc_ID_v_Word_Set_ID.keys():
  
@@ -370,6 +373,8 @@ class crawler(object):
 
             # print doc_id_set
             # pprint.pprint("")
+            
+            #add to a dict as a set and clear set
             inverted_index[i] = doc_id_set
             doc_id_set = []
 
@@ -378,11 +383,71 @@ class crawler(object):
 
 
 
-    # def get_resolved_inverted_index(self):
-    #     resolved_index = {}   
-    #     doc_string_set = []
+    def get_resolved_inverted_index(self):
+        resolved_index = {}   
+        doc_string_set = []
+        # go throught every word
+        # get the word set per doc id (if avaiable)
+        #  check if the word is in the word set
+        for i in self._Lexicon.values():
+            # print "THIS IS THE WORD:%s \n" % i
+            for k in self._Doc_ID_v_Word_Set_string.keys():
+                 # print "This the the link:%s" % self._Document_ID_V_URL[k]
+                j = self._Doc_ID_v_Word_Set_string[k]
+                    # print "THIS IS J:%s \n" % j
+                if i in j:
+                    # print "THIS IS THE WORD:%s" % i                        
+                    # print "THIS IS J:%s" % j
+                    # print "This the the link:%s" % k
+                    print "This the the link:%s \n" % self._Document_ID_V_URL[k]
+                    # print "\n"
+                    doc_string_set.append(self._Document_ID_V_URL[k])
+                    # break
+                # print "\n"
+                #add it into a dict as wordId key 
+                #doc_string_set is a set
+            resolved_index[i] = doc_string_set
+                      
+            # pprint.pprint(" ")
+            # print doc_string_set
 
-         
+            doc_string_set = []
+
+        # print "%s"%self._Doc_url_v_Word_Set_string.keys()[8]
+
+        return resolved_index
+
+    def test_print_DocID_w_wordset(self):
+
+        for i in self._Doc_ID_v_Word_Set_string:
+            print "ID i: %s per url:%s \n" % (i , self._Document_ID_V_URL[i])
+
+#written to test the idea behind the inverted index
+    def test_resolved_index(self):
+        resolved_index = {}   
+        doc_string_set = []
+
+        for i in self._Lexicon.values():
+            # print "THIS IS THE WORD:%s \n" % i
+            k = self._Doc_ID_v_Word_Set_string.keys()[0]
+                 # print "This the the link:%s" % self._Document_ID_V_URL[k]
+            j = self._Doc_ID_v_Word_Set_string[k]
+                # print "THIS IS J:%s \n" % j
+            if i in j:
+                print "THIS IS THE WORD:%s" % i                        
+                print "THIS IS J:%s" % j
+                # print "This the the link:%s" % k
+                # print "This the the link:%s \n" % self._Document_ID_V_URL[k]
+                # print "\n"
+                doc_string_set.append(self._Document_ID_V_URL[k])
+            resolved_index[i] = doc_string_set
+            
+           
+            # pprint.pprint(" ")
+            # print doc_string_set
+
+            doc_string_set = []
+        print "This the the link:%s \n" % self._Document_ID_V_URL[k]
 
     def crawl(self, depth=2, timeout=3):
         """Crawl the web!"""
@@ -430,9 +495,57 @@ class crawler(object):
 if __name__ == "__main__":
     bot = crawler(None, "hello.txt")
     bot.crawl(depth=1)
-    # bot.test_print_docID_v_URL()
+   
     # bot.test_print_Lexicon()
     # bot.test_print_DocID_to_Word_set()
     # bot.test_print_DocURL_to_Word_Set_String()
-    bot.get_inverted_index()
+    # bot.get_inverted_index()
     # bot.test_print_set()
+    bot.get_resolved_inverted_index()
+    # bot.test_print_docID_v_URL()
+    # bot.test_resolved_index()
+    # bot.test_print_DocID_w_wordset()
+
+########this is for testing###################
+
+#     ID i: 1 per url:https://www.google.com 
+
+# ID i: 2 per url:https://www.google.ca/imghp?hl=en&tab=wi 
+
+# ID i: 3 per url:https://maps.google.ca/maps?hl=en&tab=wl 
+
+# ID i: 4 per url:https://play.google.com/?hl=en&tab=w8 
+
+# ID i: 5 per url:https://www.youtube.com/?gl=CA&tab=w1 
+
+# ID i: 6 per url:https://news.google.ca/nwshp?hl=en&tab=wn 
+
+# ID i: 7 per url:https://mail.google.com/mail/?tab=wm 
+
+# ID i: 8 per url:https://drive.google.com/?tab=wo 
+
+# ID i: 9 per url:https://www.google.ca/intl/en/options/ 
+
+# ID i: 10 per url:http://www.google.ca/history/optout?hl=en 
+
+# ID i: 11 per url:https://www.google.com/preferences?hl=en 
+
+# ID i: 12 per url:https://accounts.google.com/ServiceLogin?hl=en&passive=true&continue=https://www.google.com/ 
+
+# ID i: 14 per url:https://www.google.com/advanced_search?hl=en-CA&authuser=0 
+
+# ID i: 16 per url:https://www.google.com/setprefs?sig=0_mIQnM3IUmgoB6MmnOJEh9T0udvQ%3D&hl=fr&source=homepage&sa=X&ved=0ahUKEwiUvZKnz_fdAhVr6oMKHUY1AIoQ2ZgBCAU 
+
+# ID i: 17 per url:https://www.google.com/intl/en/ads/ 
+
+# ID i: 18 per url:https://www.google.com/services/ 
+
+# ID i: 19 per url:https://plus.google.com/108349337900676782287 
+
+# ID i: 20 per url:https://www.google.com/intl/en/about.html 
+
+# ID i: 21 per url:https://www.google.com/setprefdomain?prefdom=CA&prev=https://www.google.ca/&sig=K_g-IXysnXb7jMHWRZhgnZFudDRLs%3D 
+
+# ID i: 22 per url:https://www.google.com/intl/en/policies/privacy/ 
+
+# ID i: 23 per url:https://www.google.com/intl/en/policies/terms/ 
