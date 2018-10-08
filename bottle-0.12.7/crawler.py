@@ -356,20 +356,16 @@ class crawler(object):
         #given a word i need to know all of the documents it is in
         inverted_index = {}
         doc_id_set = []
-
         #check if each word id is the the word set link to the doc id
         #add it to the final return var
-
         for i in self._Lexicon.keys():
 
             for k in self._Doc_ID_v_Word_Set_ID.keys():
  
-                next_set = self._Doc_ID_v_Word_Set_ID.itervalues()
+                next_set = self._Doc_ID_v_Word_Set_ID[k]
                 # print next_set
-                for j in next_set:
-                    if i in j:
-                        doc_id_set.append(k)
-                        break
+                if i in next_set:
+                    doc_id_set.append(k)
 
             # print doc_id_set
             # pprint.pprint("")
@@ -378,7 +374,8 @@ class crawler(object):
             inverted_index[i] = doc_id_set
             doc_id_set = []
 
-        # pprint.pprint(inverted_index)              
+        # pprint.pprint(inverted_index)   
+
         return inverted_index
 
 
@@ -399,7 +396,7 @@ class crawler(object):
                     # print "THIS IS THE WORD:%s" % i                        
                     # print "THIS IS J:%s" % j
                     # print "This the the link:%s" % k
-                    print "This the the link:%s \n" % self._Document_ID_V_URL[k]
+                    # print "This the the link:%s \n" % self._Document_ID_V_URL[k]
                     # print "\n"
                     doc_string_set.append(self._Document_ID_V_URL[k])
                     # break
@@ -413,7 +410,8 @@ class crawler(object):
 
             doc_string_set = []
 
-        # print "%s"%self._Doc_url_v_Word_Set_string.keys()[8]
+         # print "%s"%self._Doc_url_v_Word_Set_string.keys()[8]
+        # pprint.pprint(resolved_index)
 
         return resolved_index
 
@@ -499,9 +497,9 @@ if __name__ == "__main__":
     # bot.test_print_Lexicon()
     # bot.test_print_DocID_to_Word_set()
     # bot.test_print_DocURL_to_Word_Set_String()
-    # bot.get_inverted_index()
+    bot.get_inverted_index()
     # bot.test_print_set()
-    bot.get_resolved_inverted_index()
+    # bot.get_resolved_inverted_index()
     # bot.test_print_docID_v_URL()
     # bot.test_resolved_index()
     # bot.test_print_DocID_w_wordset()
