@@ -24,6 +24,7 @@ import urlparse
 from BeautifulSoup import *
 from collections import defaultdict
 import re
+import pprint
 
 def attr(elem, attr):
     """An html attribute from an html element. E.g. <a href="">, then
@@ -101,6 +102,26 @@ class crawler(object):
             'u', 'v', 'w', 'x', 'y', 'z', 'and', 'or',
         ])
 
+        ############USER EDIT#####################
+
+        #this will contain the <(word, ID)>
+        self._Lexicon = {} #WORKS
+        self._inverted_Lexicon = {}
+        #keep track of the word cout
+        self._in_words = 0;
+        #keep the Document ID vs URL
+        self._Document_ID_V_URL = {} #WORKS
+        self._URL_v_Document_ID = {}
+        #Keep _Doc_ID_v_Word_Set
+        self._Doc_ID_v_Word_Set_string = {}
+        self._Doc_ID_v_Word_Set_ID = {}
+        #changing wordset Variable that will work with dict above
+        self._word_Set_ID = []
+        self._word_Set_String ={}
+
+        ###########################################
+
+
         # TODO remove me in real version
         self._mock_next_doc_id = 1
         self._mock_next_word_id = 1
@@ -120,18 +141,20 @@ class crawler(object):
         except IOError:
             pass
     
-    # TODO remove me in real version
-    def _mock_insert_document(self, url):
-        """A function that pretends to insert a url into a document db table
+    def _insert_document(self, url):
+        """A function that insert a url into a document db table
         and then returns that newly inserted document's id."""
+        self._Document_ID_V_URL[self._mock_next_doc_id] = url
+        self._URL_v_Document_ID[url] = self._mock_next_doc_id
         ret_id = self._mock_next_doc_id
         self._mock_next_doc_id += 1
         return ret_id
     
-    # TODO remove me in real version
-    def _mock_insert_word(self, word):
-        """A function that pretends to inster a word into the lexicon db table
+    def _insert_word(self, word):
+        """A function that inster a word into the lexicon db table
         and then returns that newly inserted word's id."""
+        #Lexicon Handle here
+        self._Lexicon[self._mock_next_word_id] = word; 
         ret_id = self._mock_next_word_id
         self._mock_next_word_id += 1
         return ret_id
@@ -141,12 +164,12 @@ class crawler(object):
         if word in self._word_id_cache:
             return self._word_id_cache[word]
         
-        # TODO: 1) add the word to the lexicon, if that fails, then the
-        #          word is in the lexicon
+        #       1) add the word to the lexicon, if that fails, then the
+        #          word is in the lexicon 
         #       2) query the lexicon for the id assigned to this word, 
         #          store it in the word id cache, and return the id.
 
-        word_id = self._mock_insert_word(word)
+        word_id = self._insert_word(word)
         self._word_id_cache[word] = word_id
         return word_id
     
@@ -155,11 +178,11 @@ class crawler(object):
         if url in self._doc_id_cache:
             return self._doc_id_cache[url]
         
-        # TODO: just like word id cache, but for documents. if the document
+        #       just like word id cache, but for documents. if the document
         #       doesn't exist in the db then only insert the url and leave
         #       the rest to their defaults.
         
-        doc_id = self._mock_insert_document(url)
+        doc_id = self._insert_document(url)
         self._doc_id_cache[url] = doc_id
         return doc_id
     
@@ -207,10 +230,13 @@ class crawler(object):
 
         # TODO add title/alt/text to index for destination url
     
-    def _add_words_to_document(self):
-        # TODO: knowing self._curr_doc_id and the list of all words and their
+    def _add_words_to_document(self): ################################################################################
+        #       knowing self._curr_doc_id and the list of all words and their
         #       font sizes (in self._curr_words), add all the words into the
         #       database for this document
+        self._Doc_ID_v_Word_Set_string[self._curr_url] = self._word_Set_String
+        self._Doc_ID_v_Word_Set_ID[self._curr_doc_id] = self._word_Set_ID
+        #self._in_words = 0
         print "    num words="+ str(len(self._curr_words))
 
     def _increase_font_factor(self, factor):
@@ -231,7 +257,11 @@ class crawler(object):
             word = word.strip()
             if word in self._ignored_words:
                 continue
-            self._curr_words.append((self.word_id(word), self._font_size))
+            self._in_words = self.word_id(word)
+            self._curr_words.append((self._in_words, self._font_size))
+            self._word_Set_String[word] = self._in_words
+            self._word_Set_ID.append(self._in_words)
+            
         
     def _text_of(self, elem):
         """Get the text inside some element without any tags."""
@@ -290,6 +320,70 @@ class crawler(object):
             else:
                 self._add_text(tag)
 
+
+    def test_print_docID_v_URL(self):
+        #test function to print the document id v the url attached to it
+        # print self._Document_ID_V_URL;
+        pprint.pprint(self._Document_ID_V_URL)
+
+    def test_print_Lexicon(self):
+        #test the lexicon
+        # print self._Lexicon
+        pprint.pprint(self._Lexicon)
+
+    def test_print_DocID_to_Word_set(self):
+
+        for i in self._Doc_ID_v_Word_Set_ID.keys():
+            print "THIS IS i:%s" % i
+            word_id_set = self._Doc_ID_v_Word_Set_ID.itervalues()
+            for j in word_id_set:
+                print j 
+                print " "
+            pprint.pprint(" ")
+
+        # pprint.pprint(self._Doc_ID_v_Word_Set_ID)
+
+    def test_print_DocURL_to_Word_Set_String(self):
+        pprint.pprint(self._Doc_ID_v_Word_Set_string)
+
+    def test_print_set(self):
+        next_set = self._Doc_ID_v_Word_Set_ID.popitem()
+        pprint.pprint(next_set)
+
+    def get_inverted_index(self):
+        #given a word i need to know all of the documents it is in
+        inverted_index = {}
+        doc_id_set = []
+
+        for i in self._Lexicon.keys():
+
+            # print "here2 i:%s" % i
+
+            for k in self._Doc_ID_v_Word_Set_ID.keys():
+ 
+                next_set = self._Doc_ID_v_Word_Set_ID.itervalues()
+                # print next_set
+                for j in next_set:
+                    if i in j:
+                        doc_id_set.append(k)
+                        break
+
+            # print doc_id_set
+            # pprint.pprint("")
+            inverted_index[i] = doc_id_set
+            doc_id_set = []
+
+        # pprint.pprint(inverted_index)              
+        return inverted_index
+
+
+
+    # def get_resolved_inverted_index(self):
+    #     resolved_index = {}   
+    #     doc_string_set = []
+
+         
+
     def crawl(self, depth=2, timeout=3):
         """Crawl the web!"""
         seen = set()
@@ -319,6 +413,8 @@ class crawler(object):
                 self._curr_url = url
                 self._curr_doc_id = doc_id
                 self._font_size = 0
+                self._word_Set_ID = []
+                self._word_Set_String = {}
                 self._curr_words = [ ]
                 self._index_document(soup)
                 self._add_words_to_document()
@@ -334,3 +430,9 @@ class crawler(object):
 if __name__ == "__main__":
     bot = crawler(None, "hello.txt")
     bot.crawl(depth=1)
+    # bot.test_print_docID_v_URL()
+    # bot.test_print_Lexicon()
+    # bot.test_print_DocID_to_Word_set()
+    # bot.test_print_DocURL_to_Word_Set_String()
+    bot.get_inverted_index()
+    # bot.test_print_set()

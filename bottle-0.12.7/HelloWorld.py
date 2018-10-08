@@ -29,6 +29,7 @@ def returnResults():
 
 	#return 2 values the whole search and the split
 	#return template('{{key}}', key = keyWordCount)
+<<<<<<< HEAD
 
         notshared = dict()
         shared = dict()
@@ -71,4 +72,9 @@ def returnResults():
 		displayArray = keyWordCount, top20 = t20)
 
 run(host='localhost', port=8080, debug=True)
+=======
+	# return template('searchResultPage.html', searchResult = searchKey,
+	# 	displayArray = keyWordCount)
+	return keyWordCount
+>>>>>>> f8434e644c23b570ffbcd9a21e02e3e4b94c7b13
 
