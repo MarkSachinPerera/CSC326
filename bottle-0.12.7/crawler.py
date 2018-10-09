@@ -144,6 +144,9 @@ class crawler(object):
     def _insert_document(self, url):
         """A function that insert a url into a document db table
         and then returns that newly inserted document's id."""
+        #here im storing the id v url and url v id 
+        #so 2 separate dict() 
+        #for debugging
         self._Document_ID_V_URL[self._mock_next_doc_id] = url
         self._URL_v_Document_ID[url] = self._mock_next_doc_id
         ret_id = self._mock_next_doc_id
@@ -164,10 +167,11 @@ class crawler(object):
         if word in self._word_id_cache:
             return self._word_id_cache[word]
         
-        #       1) add the word to the lexicon, if that fails, then the
+        #       1) added the word to the lexicon, if that fails, then the
         #          word is in the lexicon 
         #       2) query the lexicon for the id assigned to this word, 
         #          store it in the word id cache, and return the id.
+        #ALL OF THIS IS HANDLED BETWEEN THIS FUNCTION AND THE insert_word functions
 
         word_id = self._insert_word(word)
         self._word_id_cache[word] = word_id
@@ -181,6 +185,7 @@ class crawler(object):
         #       just like word id cache, but for documents. if the document
         #       doesn't exist in the db then only insert the url and leave
         #       the rest to their defaults.
+        # AGAIN HANDLED BETWEEN HERE AND THE insert_document function 
         
         doc_id = self._insert_document(url)
         self._doc_id_cache[url] = doc_id
@@ -202,14 +207,15 @@ class crawler(object):
     def add_link(self, from_doc_id, to_doc_id):
         """Add a link into the database, or increase the number of links between
         two pages in the database."""
-        # TODO
+        # NOT IMPORTANT RN
 
     def _visit_title(self, elem):
         """Called when visiting the <title> tag."""
         title_text = self._text_of(elem).strip()
         print "document title="+ repr(title_text)
 
-        # TODO update document title for document id self._curr_doc_id
+        # update document title for document id self._curr_doc_id
+        #NOT IMPORTANT
     
     def _visit_a(self, elem):
         """Called when visiting <a> tags."""

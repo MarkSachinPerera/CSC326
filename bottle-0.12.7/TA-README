@@ -1,6 +1,10 @@
 PLEASE REFER TO "test-new-crawler-functions.py" FOR TEST CODE
 THIS IS JUST A OVERVIEW OF WHAT THAT TEST CASES ARE AND HOW I 
 AM TESTING THE FUNCTIONALITY
+
+PLEASE USE THE FOLLOWING TO RUN THE SCRIPT
+$python test-new-crawler-functions.py
+
  
 		#the inital url given is my personal website
 		#3 main test will be done with 3 urls to ensure functionality 
