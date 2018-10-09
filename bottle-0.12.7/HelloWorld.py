@@ -29,7 +29,7 @@ def returnResults():
 
 	#return 2 values the whole search and the split
 	#return template('{{key}}', key = keyWordCount)
-<<<<<<< HEAD
+
 
         notshared = dict()
         shared = dict()
@@ -48,7 +48,8 @@ def returnResults():
 
         allinputs.update(shared)
         allinputs.update(notshared)
-#by now I have stored every word ever entered and the number of times it was repeated over a session in allinputs
+#by now I have stored every word ever entered and the number of times
+#it was repeated over a session in allinputs
 
         t20 = dict()
         counter = 0
@@ -68,13 +69,17 @@ def returnResults():
 
 
 
-	return template('searchResultPage.html', searchResult = searchKey,
-		displayArray = keyWordCount, top20 = t20)
+        return template('searchResultPage.html', searchResult = searchKey,
+                    displayArray = keyWordCount, top20 = t20)
+
+
+
+
 
 run(host='localhost', port=8080, debug=True)
-=======
+
 	# return template('searchResultPage.html', searchResult = searchKey,
 	# 	displayArray = keyWordCount)
-	return keyWordCount
->>>>>>> f8434e644c23b570ffbcd9a21e02e3e4b94c7b13
+# return keyWordCount
+
 

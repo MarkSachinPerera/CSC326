@@ -2,85 +2,62 @@
 <head>
 <title>Results Page </title> 
 <style>
-/*styling the tables*/ 
-table {
-    border-collapse: collapse;
-    width: 70%;
-}
-
-td, th {
-    border: 1px solid #8258FA;
-    text-align: center;
-    padding: 7px;
+td {
+  border: 1px solid #8258FA;
+  padding: 7px;
+  text-align: center;  
 }
 
 tr:nth-child(1) {
     background-color: CECEF6;
 }
-
-
-
-/* Styling the tab */
-.tab {
-    overflow: hidden;
-    border: 1px solid #A9BCF5;
-    background-color: #CED8F6;
+.input{
+  width: 350px;
+  background: #E0E6F8;
+  font-size: 10 px;
+  border: 0; 
+  border: 3px solid #E0E6F8;
+  border-radius: 20px;
+  outline: none; 
+  padding: 15px 30px;
+  color: #111; 
+  outline: none;
 }
-
-/* Style the buttons inside the tab */
-.tab button {
-    background-color: #E0E6F8;
-    float: center;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    padding: 15px 15px;
-    transition: 0.1s;
-    font-size: 17px;
+.search_button{ 
+  width: 75px; 
+  height: 50px; 
+  background: #5882FA;
+  border: #000;
+  border-radius: 20px; 
+  outline: none;
+  font-size:12px;
+  color: #fff;
+  font-weight: bold;  
 }
-
-/*on hover*/
-.tab button:hover {
-    background-color: #F2F5A9;
-}
-
-/*active */
-.tab button.active {
-    background-color: #FFFF00;
-}
-
-
-.content {
-    display: none;
-    padding: 6px 12px;
-    border: 5px solid #A9BCF5;
-    border-top: none;
-}
-
 </style>
 </head> 
-
 <body> 
-
+<form action="/results" method="post">
+    <div class="container">
+	<input name="searchKey" class="input" placeholder="What are you looking for today"
+	 type="text" />
+    <input value="SEARCH" type="submit" class="search_button" />
+	</form>
+	</div> 
 <p style=" 
   width: 350px;
   border: 3px solid red;
-  background: #E0E6F8;
+  background: #A9E2F3;
   padding: 15px 30px; 
   border: 0; 
-  border-radius: 20px;
   outline: none; 
   color: #111; 
   font-size: 10 px;
   outline: none;">
- Search for:<b> "{{searchResult}}" </b></p>
- <div class="tab">
-  <button class="l" onclick="action(event, 'Results')">My Results</button>
-  <button class="l" onclick="action(event, 'History')">My History</button>
-</div>
-
-<div id="Results" class="content">
- <table>
+ You have searched for:<b> "{{searchResult}}" </b></p>
+<table id="results" style="
+  border-collapse: collapse;
+  width: 70%;">
 <caption>In your search, the following was found:</caption>
 <tr>
 <td bgcolor'"#CECEF6" ><b>Word</b></td>
@@ -88,42 +65,21 @@ tr:nth-child(1) {
 </tr> 
 %for d, e in displayArray.items():
 	 <tr><td>{{d}}</td><td>{{e}}</td></tr>
-
 %end
 </table> 
-</div>
-
-<div id="History" class="content">
- <table>
-<caption>top 20 keywords</caption> 
+<br> 
+ <table id="history" style="
+   border-collapse: collapse;
+   width: 70%;" >
+<caption>Top 20 keywords</caption> 
 <tr>
-<td bgcolinksor'"#CECEF6" ><b>Word</b></td>
+<td bgcolor'"#CECEF6" ><b>Word</b></td>
 <td bgcolor'"#CECEF6" ><b>Count</b></td>
 </tr> 
 %for k, c in top20.items():
 	 <tr><td>{{k}}</td><td>{{c}}</td></tr>
-
 %end
 </table> 
-</div>
-
-<!-- this section of the code is learned from https://www.w3schools.com/ --> 
-<script>
-function action(eventt, action) {
-    var i, content, l;
-    content = document.getElementsByClassName("content");
-    for (i = 0; i < content.length; i++) {
-        content[i].style.display = "none";
-    }
-    l = document.getElementsByClassName("l");
-    for (i = 0; i < l.length; i++) {
-        l[i].className = l[i].className.replace(" active", "");
-    }
-    document.getElementById(action).style.display = "block";
-    eventt.currentTarget.className += " active";
-}
-</script>
-     
 </body>
 </html> 
 
