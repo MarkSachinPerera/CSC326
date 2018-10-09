@@ -106,7 +106,6 @@ class crawler(object):
 
         #this will contain the <(word, ID)>
         self._Lexicon = {} #WORKS
-        self._inverted_Lexicon = {}
         #keep track of the word cout
         self._in_words = 0;
         #keep the Document ID vs URL
@@ -114,6 +113,7 @@ class crawler(object):
         self._URL_v_Document_ID = {}
         #Keep _Doc_ID_v_Word_Set
         self._Doc_ID_v_Word_Set_string = {}
+        self._Doc_url_v_Word_Set_string = {}
         self._Doc_ID_v_Word_Set_ID = {}
         #changing wordset Variable that will work with dict above
         self._word_Set_ID = []
@@ -234,7 +234,8 @@ class crawler(object):
         #       knowing self._curr_doc_id and the list of all words and their
         #       font sizes (in self._curr_words), add all the words into the
         #       database for this document
-        self._Doc_ID_v_Word_Set_string[self._curr_url] = self._word_Set_String
+        self._Doc_ID_v_Word_Set_string[self._curr_doc_id] = self._word_Set_String; 
+        self._Doc_url_v_Word_Set_string[self._curr_url] = self._word_Set_String
         self._Doc_ID_v_Word_Set_ID[self._curr_doc_id] = self._word_Set_ID
         #self._in_words = 0
         print "    num words="+ str(len(self._curr_words))
@@ -321,68 +322,68 @@ class crawler(object):
                 self._add_text(tag)
 
 
-    def test_print_docID_v_URL(self):
-        #test function to print the document id v the url attached to it
-        # print self._Document_ID_V_URL;
-        pprint.pprint(self._Document_ID_V_URL)
-
-    def test_print_Lexicon(self):
-        #test the lexicon
-        # print self._Lexicon
-        pprint.pprint(self._Lexicon)
-
-    def test_print_DocID_to_Word_set(self):
-
-        for i in self._Doc_ID_v_Word_Set_ID.keys():
-            print "THIS IS i:%s" % i
-            word_id_set = self._Doc_ID_v_Word_Set_ID.itervalues()
-            for j in word_id_set:
-                print j 
-                print " "
-            pprint.pprint(" ")
-
-        # pprint.pprint(self._Doc_ID_v_Word_Set_ID)
-
-    def test_print_DocURL_to_Word_Set_String(self):
-        pprint.pprint(self._Doc_ID_v_Word_Set_string)
-
-    def test_print_set(self):
-        next_set = self._Doc_ID_v_Word_Set_ID.popitem()
-        pprint.pprint(next_set)
-
     def get_inverted_index(self):
         #given a word i need to know all of the documents it is in
         inverted_index = {}
         doc_id_set = []
-
+        #check if each word id is the the word set link to the doc id
+        #add it to the final return var
         for i in self._Lexicon.keys():
-
-            # print "here2 i:%s" % i
 
             for k in self._Doc_ID_v_Word_Set_ID.keys():
  
-                next_set = self._Doc_ID_v_Word_Set_ID.itervalues()
+                next_set = self._Doc_ID_v_Word_Set_ID[k]
                 # print next_set
-                for j in next_set:
-                    if i in j:
-                        doc_id_set.append(k)
-                        break
+                if i in next_set:
+                    doc_id_set.append(k)
 
             # print doc_id_set
             # pprint.pprint("")
+            
+            #add to a dict as a set and clear set
             inverted_index[i] = doc_id_set
             doc_id_set = []
 
-        # pprint.pprint(inverted_index)              
+        # pprint.pprint(inverted_index)   
+
         return inverted_index
 
 
 
-    # def get_resolved_inverted_index(self):
-    #     resolved_index = {}   
-    #     doc_string_set = []
+    def get_resolved_inverted_index(self):
+        resolved_index = {}   
+        doc_string_set = []
+        # go throught every word
+        # get the word set per doc id (if avaiable)
+        #  check if the word is in the word set
+        for i in self._Lexicon.values():
+            # print "THIS IS THE WORD:%s \n" % i
+            for k in self._Doc_ID_v_Word_Set_string.keys():
+                 # print "This the the link:%s" % self._Document_ID_V_URL[k]
+                j = self._Doc_ID_v_Word_Set_string[k]
+                    # print "THIS IS J:%s \n" % j
+                if i in j:
+                    # print "THIS IS THE WORD:%s" % i                        
+                    # print "THIS IS J:%s" % j
+                    # print "This the the link:%s" % k
+                    # print "This the the link:%s \n" % self._Document_ID_V_URL[k]
+                    # print "\n"
+                    doc_string_set.append(self._Document_ID_V_URL[k])
+                    # break
+                # print "\n"
+                #add it into a dict as wordId key 
+                #doc_string_set is a set
+            resolved_index[i] = doc_string_set
+                      
+            # pprint.pprint(" ")
+            # print doc_string_set
 
-         
+            doc_string_set = []
+
+         # print "%s"%self._Doc_url_v_Word_Set_string.keys()[8]
+        # pprint.pprint(resolved_index)
+
+        return resolved_index
 
     def crawl(self, depth=2, timeout=3):
         """Crawl the web!"""
@@ -427,12 +428,66 @@ class crawler(object):
                 if socket:
                     socket.close()
 
+##################these are tester functions############################
+
+    def get_Lexicon(self):
+        return self._Lexicon
+
+    def get_Doc_ID_v_URL(self):
+        return self._Document_ID_V_URL
+
+    def get_DocID_v_wordsetID(self):
+        return self._Doc_ID_v_Word_Set_ID
+
+    def get_DocID_v_wordsetString(self):
+        return self._Doc_ID_v_Word_Set_string
+
+    def print_word_sets(self):
+
+        for i in self._Doc_ID_v_Word_Set_ID.keys():
+            print i
+            print self._Doc_ID_v_Word_Set_string[i]
+
+
+#written to test the idea behind the inverted index
+    def test_resolved_index(self,id):
+        resolved_index = {}   
+        doc_string_set = []
+
+        for i in self._Lexicon.values():
+            # print "THIS IS THE WORD:%s \n" % i
+            k = self._Doc_ID_v_Word_Set_string.keys()[id]
+                 # print "This the the link:%s" % self._Document_ID_V_URL[k]
+            j = self._Doc_ID_v_Word_Set_string[k]
+                # print "THIS IS J:%s \n" % j
+            if i in j:
+                print "THIS IS THE WORD:%s" % i                        
+                print "THIS IS J:%s" % j
+                # print "This the the link:%s" % k
+                # print "This the the link:%s \n" % self._Document_ID_V_URL[k]
+                # print "\n"
+                doc_string_set.append(self._Document_ID_V_URL[k])
+            resolved_index[i] = doc_string_set
+            
+           
+            # pprint.pprint(" ")
+            # print doc_string_set
+
+            doc_string_set = []
+        print "This the the link:%s \n" % self._Document_ID_V_URL[k]
+
+
+
+
+
+#####################################################################################
+
 if __name__ == "__main__":
-    bot = crawler(None, "hello.txt")
+    bot = crawler(None, "url.txt")
     bot.crawl(depth=1)
-    # bot.test_print_docID_v_URL()
-    # bot.test_print_Lexicon()
-    # bot.test_print_DocID_to_Word_set()
-    # bot.test_print_DocURL_to_Word_Set_String()
-    bot.get_inverted_index()
-    # bot.test_print_set()
+   
+    bot.print_word_sets()
+    # bot.get_inverted_index()
+    # bot.get_resolved_inverted_index()
+    # bot.test_resolved_index()
+
