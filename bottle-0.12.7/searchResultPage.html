@@ -2,44 +2,56 @@
 <head>
 <title>Results Page </title> 
 <style>
-td {
+td { 
   border: 1px solid #8258FA;
   padding: 7px;
   text-align: center;  
 }
 
-tr:nth-child(1) {
+tr:nth-child(1) { 
+/* first row of each table is for what each coloumns will be so i changed the color */
     background-color: CECEF6;
 }
 .input{
+/* info regarding how the search bar should look like, basically same one as 
+first page just with different positioning */
   width: 350px;
   background: #E0E6F8;
   font-size: 10 px;
   border: 0; 
   border: 3px solid #E0E6F8;
   border-radius: 20px;
-  outline: none; 
   padding: 15px 30px;
   color: #111; 
   outline: none;
 }
 .search_button{ 
+/* info regarding how the search button should look like */
+  font-size:12px;
+  font-weight: bold; 
+  color: #fff;
+  font-weight: bold; 
   width: 75px; 
   height: 50px; 
   background: #5882FA;
   border: #000;
   border-radius: 20px; 
-  outline: none;
-  font-size:12px;
-  color: #fff;
-  font-weight: bold;  
+  outline: none;  
 }
+
+
 </style>
 </head> 
 <body> 
-<form action="/results" method="post">
+<!-- same thing as index page, this section gets the string from the user 
+and goes back to searchResultPage updating the two dictionaries accordingly  -->
+	
+	<img src="/static/TARK.jpg" alt="TARK Icon"style="width:250px;height:150;">
+	
+	
+	<form id="keywords" method="get">
     <div class="container">
-	<input name="searchKey" class="input" placeholder="What are you looking for today"
+	<input name="keywords" class="input" placeholder="What are you looking for today"
 	 type="text" />
     <input value="SEARCH" type="submit" class="search_button" />
 	</form>
@@ -54,10 +66,13 @@ tr:nth-child(1) {
   color: #111; 
   font-size: 10 px;
   outline: none;">
- You have searched for:<b> "{{searchResult}}" </b></p>
+<!--   styling the little box that displays the searched text -->
+
+ search for<b> "{{searchResult}}" </b></p>
 <table id="results" style="
   border-collapse: collapse;
   width: 70%;">
+<!--   table 1 for what just got searched -->
 <caption>In your search, the following was found:</caption>
 <tr>
 <td bgcolor'"#CECEF6" ><b>Word</b></td>
@@ -71,6 +86,7 @@ tr:nth-child(1) {
  <table id="history" style="
    border-collapse: collapse;
    width: 70%;" >
+<!--    table 2 for top 20  -->
 <caption>Top 20 keywords</caption> 
 <tr>
 <td bgcolor'"#CECEF6" ><b>Word</b></td>
