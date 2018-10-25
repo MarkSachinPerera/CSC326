@@ -14,7 +14,8 @@ def create_service():
 
     group.authorize("icmp", -1, -1, "0.0.0.0/0")
     group.authorize("tcp", 22, 22, "0.0.0.0/0")
-    group.authorize("icmp", 80, 80, "0.0.0.0/0")
+#     group.authorize("icmp", 80, 80, "0.0.0.0/0")
+    group.authorize("tcp", 80, 80, "0.0.0.0/0")
 
     resp = conn.run_instances("ami-9eaa1cf6", instance_type="t2.micro", key_name = "security_key", security_groups=[group])
     os.chmod("/home/markperera/WorkSpace/WS-CSC326/Keys/security_key.pem", 600)
@@ -58,12 +59,17 @@ def getdns(resp):
 #Associate IP address
 def staticip(resp,address):
 	conn = boto.ec2.connect_to_region("us-east-1")
-	
+
 	address = conn.allocate_address()
 	inst = resp.instances[0]
 	conn.associate_address(allocation_id = address.allocation_id, instance_id = inst.id )
 	return address
-	
+
+def fileupload(resp,dns):
+	ssh = paramiko.SSHClient()
+	ssh.load_system_host_keys()
+	ssh.connect(hostname = [dns], username= "ubuntu",  gss_trust_dns= True, key_filename= "/home/markperera/WorkSpace/WS-CSC326/Keys/security_key.pem")
+	stdin, stdout, stderr = ssh.exec_command('ls -l')
 
 
 
