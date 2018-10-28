@@ -7,8 +7,8 @@ from paramiko import SSHClient
 def create_service():
     conn = boto.ec2.connect_to_region("us-east-1")
 
-    key_pair = conn.create_key_pair("security_key",dry_run=False)
-    key_pair.save("/home/markperera/WorkSpace/WS-CSC326/Keys/")
+    # key_pair = conn.create_key_pair("xxxxxxxxxxx",dry_run=False)
+    # key_pair.save("/home/markperera/WorkSpace/WS-CSC326/Keys/")
 
     group = conn.create_security_group("basic_security", "The basic requirements for the lab")
 
@@ -17,8 +17,8 @@ def create_service():
 #     group.authorize("icmp", 80, 80, "0.0.0.0/0")
     group.authorize("tcp", 80, 80, "0.0.0.0/0")
 
-    resp = conn.run_instances("ami-9eaa1cf6", instance_type="t2.micro", key_name = "security_key", security_groups=[group])
-    os.chmod("/home/markperera/WorkSpace/WS-CSC326/Keys/security_key.pem", 600)
+    resp = conn.run_instances("ami-9eaa1cf6", instance_type="t2.micro", key_name = "xxxxxxxxxxx", security_groups=[group])
+    os.chmod("xxxxxxxxxxx.pem", 600)
     return resp
 
 #doesnt do shit
@@ -39,11 +39,11 @@ def terminate(resp):
 def cleanup():
     conn = boto.ec2.connect_to_region("us-east-1")
     conn.delete_security_group(name = "basic_security")
-    conn.delete_key_pair("security_key")
+    conn.delete_key_pair("xxxxxxxxxxx")
     # conn.delete_security_group(name = "basic_security1")
 
-    if os.path.exists("/home/markperera/WorkSpace/WS-CSC326/Keys/security_key.pem"):
-        os.remove("/home/markperera/WorkSpace/WS-CSC326/Keys/security_key.pem")
+    if os.path.exists("/home/markperera/WorkSpace/WS-CSC326/Keys/xxxxxxxxxxx.pem"):
+        os.remove("/home/markperera/WorkSpace/WS-CSC326/Keys/xxxxxxxxxxx.pem")
     
 
 #get the dns address for scp
@@ -68,16 +68,16 @@ def staticip(resp,address):
 def fileupload(resp,dns):
 	ssh = paramiko.SSHClient()
 	ssh.load_system_host_keys()
-	ssh.connect(hostname = [dns], username= "ubuntu",  gss_trust_dns= True, key_filename= "/home/markperera/WorkSpace/WS-CSC326/Keys/security_key.pem")
+	ssh.connect(hostname = [dns], username= "ubuntu",  gss_trust_dns= True, key_filename= "/home/markperera/WorkSpace/WS-CSC326/Keys/xxxxxxxxxxx.pem")
 	stdin, stdout, stderr = ssh.exec_command('ls -l')
 
 
 
-# $ chmod 400 security_key
-# $ ssh -i "security_key.pem" ubuntu@ec2-52-207-63-243.compute-1.amazonaws.com
+# $ chmod 400 xxxxxxxxxxx
+# $ ssh -i "xxxxxxxxxxx.pem" ubuntu@ec2-52-207-63-243.compute-1.amazonaws.com
 
 #   SCP
-# $ scp -r -i "security_key.pem" /home/markperera/WorkSpace/WS-CSC326/CSC326/bottle-0.12.7 ubuntu@ec2-52-207-63-243.compute-1.amazonaws.com:/
+# $ scp -r -i "xxxxxxxxxxx.pem" /home/markperera/WorkSpace/WS-CSC326/CSC326/bottle-0.12.7 ubuntu@ec2-52-207-63-243.compute-1.amazonaws.com:/
     
     
     # runSSH = paramiko.SSHClient()
@@ -86,7 +86,7 @@ def fileupload(resp,dns):
 
 
 #   conn.delete_security_group(name = "basic_security")
-#   conn.delete_key_pair("security_key")
+#   conn.delete_key_pair("xxxxxxxxxxx")
 #   terminate_instances(instance_ids=None, dry_run=False)
 #   delete_security_group(name=None, group_id=None, dry_run=False)
 #   get_key_pair(keyname, dry_run=False)
