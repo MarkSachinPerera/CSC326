@@ -1,0 +1,12 @@
+benchmarking data: 
+We can handle 20 concurrent connections at 1000 requests. 
+Number of Requests per second: 323 
+Utilization of CPU: 13%
+Disk IO: 0 read and 64k write
+Memory: 0 memory used
+Network when max performance is sustained: receive: 5050
+		   send: 2670
+Average response time: 3ms requests/seconds 
+99% percentile: 287
+
+ 

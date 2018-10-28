@@ -1,0 +1,82 @@
+<html>
+<head>
+<title>TARK</title>
+<style>
+/* body color */
+body{
+  background: #FFF;
+  }
+/* position of the search bar */
+.searchbarposition{
+  position: absolute;
+  top: 65%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+}
+.input{
+/* info regarding how the search bar should look like, basically same one as
+first page just with different positioning */
+  width: 350px;
+  background: #E0E6F8;
+  font-size: 10 px;
+  border: 0;
+  border: 3px solid #E0E6F8;
+  border-radius: 20px;
+  padding: 15px 30px;
+  color: #111;
+  outline: none;
+}
+.search_button{
+/* info regarding how the search button should look like */
+  font-size:12px;
+  font-weight: bold;
+  color: #fff;
+  font-weight: bold;
+  width: 75px;
+  height: 50px;
+  background: #5882FA;
+  border: #000;
+  border-radius: 20px;
+  outline: none;
+}
+
+.login_button{
+/* info regarding how the search button should look like */
+  font-size:12px;
+  font-weight: bold;
+  color: #fff;
+  font-weight: bold;
+  width: 75px;
+  height: 50px;
+  background: #5882FA;
+  border: #000;
+  border-radius: 50px;
+}
+
+
+
+img {
+/* positioning of the picture */
+  position: absolute;
+  top: 25%;
+  left:31%;
+}
+</style>
+</head>
+<body>
+
+
+<!-- same thing as index page, this section gets the string from the user
+and goes back to searchResultPage updating the two dictionaries accordingly  -->
+<form action="/signedin" method="get">
+	<input value="SIGN IN" type="submit"/>
+</form>
+	<img src="/static/TARK.jpg" alt="TARK Icon"style="width:500px;height:300px;">
+	<form action="/aresults" method="post">
+	<div class="searchbarposition">
+	<input name="searchKey" class="input" placeholder="What are you looking for today" type="text" />
+    <input value="SEARCH" type="submit" class="search_button" />
+	</form>
+	</div>
+</body>
+</html>

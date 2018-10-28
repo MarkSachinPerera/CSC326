@@ -38,20 +38,23 @@ first page just with different positioning */
   border-radius: 20px; 
   outline: none;  
 }
-
-
 </style>
 </head> 
-<body> 
+<body>
+
+
+<p style="text-align:right"> Welcome {{EMAIL}} </p>
+
+<form action="/signout" method="get">
+	<input value="SIGN OUT" type="submit"/>
+</form>
+
+
 <!-- same thing as index page, this section gets the string from the user 
 and goes back to searchResultPage updating the two dictionaries accordingly  -->
-	
-	<img src="/static/TARK.jpg" alt="TARK Icon"style="width:250px;height:150;">
-	
-	
-	<form id="keywords" method="get">
+<form action="/results" method="post">
     <div class="container">
-	<input name="keywords" class="input" placeholder="What are you looking for today"
+	<input name="searchKey" class="input" placeholder="What are you looking for today"
 	 type="text" />
     <input value="SEARCH" type="submit" class="search_button" />
 	</form>
@@ -67,7 +70,6 @@ and goes back to searchResultPage updating the two dictionaries accordingly  -->
   font-size: 10 px;
   outline: none;">
 <!--   styling the little box that displays the searched text -->
-
  search for<b> "{{searchResult}}" </b></p>
 <table id="results" style="
   border-collapse: collapse;
@@ -95,7 +97,7 @@ and goes back to searchResultPage updating the two dictionaries accordingly  -->
 %for k, c in top20.items():
 	 <tr><td>{{k}}</td><td>{{c}}</td></tr>
 %end
-</table> 
+</table>
 </body>
 </html> 
 
