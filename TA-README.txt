@@ -49,6 +49,8 @@ $ pip install httplib2
 
 $ pip install beaker
 
+$ chmod +x HelloWorld.py
+
 $ sudo python HelloWorld.py
 
 5. get the ip address first terminal and enter to browser
