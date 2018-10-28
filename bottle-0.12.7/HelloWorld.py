@@ -177,6 +177,10 @@ def returnResults():
 
         usermanager[eemail] = t20
 
+<<<<<<< HEAD
+=======
+run(host='0.0.0.0', port=80, debug=True)
+>>>>>>> d8166fa15032b44c8b9ee36250d527654cb1805a
 
 
         return template('searchResultPage.html', searchResult = searchKey,
