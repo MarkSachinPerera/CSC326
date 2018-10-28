@@ -65,11 +65,6 @@ def staticip(resp,address):
 	conn.associate_address(allocation_id = address.allocation_id, instance_id = inst.id )
 	return address
 
-def fileupload(resp,dns):
-	ssh = paramiko.SSHClient()
-	ssh.load_system_host_keys()
-	ssh.connect(hostname = [dns], username= "ubuntu",  gss_trust_dns= True, key_filename= "/home/markperera/WorkSpace/WS-CSC326/Keys/security_key.pem")
-	stdin, stdout, stderr = ssh.exec_command('ls -l')
 
 
 
@@ -78,10 +73,6 @@ def fileupload(resp,dns):
 
 #   SCP
 # $ scp -r -i "security_key.pem" /home/markperera/WorkSpace/WS-CSC326/CSC326/bottle-0.12.7 ubuntu@ec2-52-207-63-243.compute-1.amazonaws.com:/
-    
-    
-    # runSSH = paramiko.SSHClient()
-    # runSSH.connect()
 
 
 

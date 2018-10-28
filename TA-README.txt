@@ -2,6 +2,8 @@
 
 1. Go to the lab 2 folder
 
+	- Replace XXXXXX with your security Key
+
 2. open terminal (IMPORTANT DO NOT SHUT DOWN THIS TERMINAL) & type:
 
 $ python
@@ -36,6 +38,16 @@ $ ssh -i "$1/XXXXXXX.pem" ubuntu@$3
 $ cd bottle-0.12.7
 
 $ sudo apt-get update
+
+$ sudo apt-get install google-api-python-client
+
+$ sudo apt-get install python-pip
+
+$ pip install oauth2client # if failed try pip install oauth2client --user
+
+$ pip install httplib2 
+
+$ pip install beaker
 
 $ sudo python HelloWorld.py
 
