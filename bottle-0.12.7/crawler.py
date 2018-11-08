@@ -118,6 +118,8 @@ class crawler(object):
         #changing wordset Variable that will work with dict above
         self._word_Set_ID = []
         self._word_Set_String ={}
+        ############# Lab 3 ######################
+        self._link_tracker = []
 
         ###########################################
 
@@ -204,10 +206,17 @@ class crawler(object):
         parsed_url = urlparse.urlparse(curr_url)
         return urlparse.urljoin(parsed_url.geturl(), rel)
 
-    def add_link(self, from_doc_id, to_doc_id):
+    def add_link(self, from_doc_id, to_doc_id): ##########################################################         THIS ONE
         """Add a link into the database, or increase the number of links between
         two pages in the database."""
-        # NOT IMPORTANT RN
+        #check if there is a link from_doc to to_doc
+        # if yes
+        # increaase link
+        #if no create new link 
+        
+        temp = [from_doc_id,to_doc_id]
+        print temp
+        self._link_tracker.append(temp)
 
     def _visit_title(self, elem):
         """Called when visiting the <title> tag."""
@@ -232,11 +241,11 @@ class crawler(object):
         
         # add a link entry into the database from the current document to the
         # other document
-        self.add_link(self._curr_doc_id, self.document_id(dest_url))
+        self.add_link(self._curr_doc_id, self.document_id(dest_url))   ################# they are all numbers
 
         # TODO add title/alt/text to index for destination url
     
-    def _add_words_to_document(self): ################################################################################
+    def _add_words_to_document(self): 
         #       knowing self._curr_doc_id and the list of all words and their
         #       font sizes (in self._curr_words), add all the words into the
         #       database for this document
@@ -482,7 +491,17 @@ class crawler(object):
             doc_string_set = []
         print "This the the link:%s \n" % self._Document_ID_V_URL[k]
 
+#Test the add link between 2 documents
+    def test_doc_linker(self):
+        #test adding
+        for i in range(10):
+            "Adding i:%s to i+1:%s" % (i , i+1)
+            self.add_link(i,i+1)
 
+        #test increamenting
+        for j in range(10):
+            for i in range(10):
+                self.add_link(i,i+j)
 
 
 
@@ -490,9 +509,11 @@ class crawler(object):
 
 if __name__ == "__main__":
     bot = crawler(None, "url.txt")
-    bot.crawl(depth=1)
+    # bot.crawl(depth=1)
    
-    bot.print_word_sets()
+    bot.test_doc_linker()
+    # bot.add_link(2,3)
+    #bot.print_word_sets()
     # bot.get_inverted_index()
     # bot.get_resolved_inverted_index()
     # bot.test_resolved_index()
