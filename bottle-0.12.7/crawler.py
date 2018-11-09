@@ -215,7 +215,7 @@ class crawler(object):
         #if no create new link 
         
         temp = [from_doc_id,to_doc_id]
-        print temp
+        # print temp
         self._link_tracker.append(temp)
 
     def _visit_title(self, elem):
@@ -445,6 +445,9 @@ class crawler(object):
 
 ##################these are tester functions############################
 
+    def get_link(self):
+        return self._link_tracker
+
     def get_Lexicon(self):
         return self._Lexicon
 
@@ -509,9 +512,9 @@ class crawler(object):
 
 if __name__ == "__main__":
     bot = crawler(None, "url.txt")
-    # bot.crawl(depth=1)
+    bot.crawl(depth=1)
    
-    bot.test_doc_linker()
+    # bot.test_doc_linker()
     # bot.add_link(2,3)
     #bot.print_word_sets()
     # bot.get_inverted_index()
