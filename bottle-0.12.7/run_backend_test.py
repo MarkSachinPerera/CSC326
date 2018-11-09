@@ -21,11 +21,12 @@ def setup_Read(setserver = False):
         # print type(i)
         doc = doc_id_v_URL[i[0]]
         rank_url[doc] = i[1]
-    print rank_url
+    # print rank_url
 
     if setserver:
         # print "here"
         rs = redis.Redis("localhost")
+        rs.set("rank_url",rank_url)
         rs.set("rank",rank)
         rs.set("doc_id_v_URL",doc_id_v_URL)
         rs.set("lexicon",lexicon)
