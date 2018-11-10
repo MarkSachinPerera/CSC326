@@ -120,7 +120,8 @@ class crawler(object):
         self._word_Set_String ={}
         ############# Lab 3 ######################
         self._link_tracker = []
-
+        self._doc_id_v_title = {}
+        self._doc_id_v_text = {}
         ###########################################
 
 
@@ -223,19 +224,20 @@ class crawler(object):
         title_text = self._text_of(elem).strip()
         print "document title="+ repr(title_text)
 
+        self._doc_id_v_title[self._curr_doc_id] = title_text
         # update document title for document id self._curr_doc_id
-        #NOT IMPORTANT
     
     def _visit_a(self, elem):
         """Called when visiting <a> tags."""
 
         dest_url = self._fix_url(self._curr_url, attr(elem,"href"))
 
-        #print "href="+repr(dest_url), \
+        # print "href="+repr(dest_url), \
         #      "title="+repr(attr(elem,"title")), \
         #      "alt="+repr(attr(elem,"alt")), \
         #      "text="+repr(self._text_of(elem))
-
+        text = repr(self._text_of(elem))
+        self._doc_id_v_text[self._curr_doc_id] = text
         # add the just found URL to the url queue
         self._url_queue.append((dest_url, self._curr_depth))
         
@@ -444,6 +446,12 @@ class crawler(object):
                     socket.close()
 
 ##################these are tester functions############################
+
+    def get_title(self):
+        return self._doc_id_v_text
+
+    def get_text(self):
+        return self._doc_id_v_text
 
     def get_link(self):
         return self._link_tracker

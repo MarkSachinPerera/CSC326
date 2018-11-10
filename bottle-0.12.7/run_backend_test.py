@@ -12,6 +12,8 @@ def setup_Read(setserver = False):
     doc_id_v_URL = bot.get_Doc_ID_v_URL()
     lexicon = bot.get_Lexicon()
     inverted_index = bot.get_inverted_index()
+    title = bot.get_title()
+    text = bot.get_text()
 
     #sort the ranks
     rank = sorted(rank.items(), key=operator.itemgetter(1), reverse=True)
@@ -27,14 +29,20 @@ def setup_Read(setserver = False):
         # print "here"
         rs = redis.Redis("localhost")
         rs.set("rank_url",rank_url)
-        rs.set("rank",rank)
+        rs.set("title",title)
+        rs.set("text",text)
+        # rs.set("rank",rank)
         rs.set("doc_id_v_URL",doc_id_v_URL)
         rs.set("lexicon",lexicon)
         rs.set("inverted_index",inverted_index)
 
 def delete_server():
         rs = redis.Redis("localhost")
-        rs.delete("rank")
+        # rs.delete("rank")
+        rs.delete("rank_url")
+        rs.delete("text")
+        rs.delete("title)
+        rs.delete("rank_url")
         rs.delete("doc_id_v_URL")
         rs.delete("lexicon")
         rs.delete("inverted_index")
