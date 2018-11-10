@@ -19,11 +19,13 @@ def setup_Read(setserver = False):
     rank = sorted(rank.items(), key=operator.itemgetter(1), reverse=True)
     # print rank
     rank_url = {}
+    j = 0
     for i in rank:
         # print type(i)
         doc = doc_id_v_URL[i[0]]
-        rank_url[doc] = i[1]
-    # print rank_url
+        rank_url[j] = doc
+        j += 1
+    print rank_url
 
     if setserver:
         # print "here"
@@ -41,7 +43,7 @@ def delete_server():
         # rs.delete("rank")
         rs.delete("rank_url")
         rs.delete("text")
-        rs.delete("title)
+        rs.delete("title")
         rs.delete("rank_url")
         rs.delete("doc_id_v_URL")
         rs.delete("lexicon")
