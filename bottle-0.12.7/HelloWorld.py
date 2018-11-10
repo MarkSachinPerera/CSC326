@@ -7,9 +7,42 @@ from collections import Counter
 import httplib2
 from beaker.middleware import SessionMiddleware
 import bottle
+from bottle import error
+import redis
+import ast
 allinputs = dict()
 import json
-usermanager = {}
+import unicodedata
+usermanager = dict()
+searched = "hi"
+ar = dict()
+s = dict()
+mark = dict()
+
+rs = redis.Redis("localhost")
+urls = rs.get("rank_url")
+urls = ast.literal_eval(urls)
+resolved = rs.get("resolved")
+
+
+
+
+
+
+# urls = {
+#     #rank / url
+#     1: "http://www.google.com",
+#     3: "http://www.yahoo.com",
+#     6: "http://www.facebook.com",
+#     2: "http://www.twitter.com",
+#     5: "http://www.instagram.com",
+#     4: "http://www.linkedin.com",
+#     7: "http://www.snapchat.com",
+#     10: "http://wwww.github.com",
+#     8: "http://www.outlook.com",
+#     11: "http://www.q.utoronto.ca",
+#     9 : "http://www.youtube.com"
+# }
 
 
 # session setting
@@ -20,10 +53,133 @@ session_opts = {
     'session.auto': True
 }
 app = SessionMiddleware(bottle.app(), session_opts)
+
+
+
+
+@error(404)
+def error404(error):
+    return 'Nothing here, sorry'
+
+
+
 @route('/')
 def welcome_page():
     return template('ask.html')
     #the web famework will launch the above page as the intro page
+
+#Lab 3 addition
+@route('/nextpage', method='POST')
+def nextpage():
+    global s
+    # s holds all the ranks:urls in increasing order of their ranking
+
+    # i only want to hold the top 5 for each result
+
+
+    if len(s) <= 5:
+        global s
+        top5 = s
+    else:
+        counter = 0
+        top5 = dict()
+        while counter < 5:
+            wantedkey = next(iter(s))
+            top5[wantedkey] = s[wantedkey]
+            global s
+            del s[wantedkey]
+            counter = counter + 1
+
+    global searched
+    global ar
+
+    return template('anonsearchResultPage.html', searchResult=searched,
+                    displayArray=ar, sortedurl=top5)
+
+
+
+@route('/aresults', method='POST')
+def areturnResults():
+    # Take the key word
+    # split it
+    # count repeats
+    global searchKey
+    searchKey = request.forms.get('searchKey')
+    searchKey = searchKey.lower()
+    splitKey = searchKey.split(" ")
+    keyWordCount = {i: splitKey.count(i) for i in splitKey}
+    word = next(iter(keyWordCount))
+    
+
+    #resolved
+    global resolved
+    resolved = ast.literal_eval(resolved)
+    uword = unicode(word, "utf-8")
+    listofurl = ()
+    if uword in resolved:
+        listofurl = resolved[uword]
+
+
+    
+    
+    print urls #the dict with everything 
+    print "==================================================="
+    print listofurl #list
+    for i in range(len(listofurl)):
+        if listofurl[i] in urls:
+            name = unicodedata.normalize('NFKD', listofurl[i]).encode('ascii','ignore')
+            global mark
+            mark[urls[listofurl[i]]]  = name
+            dne = False 
+    print "=============================hiiiiiiiiii======================"
+    print mark #list
+
+
+  
+    #LAB 3 : Assuming that the dict with urls and their rank is sent to me here :
+    #sort the dictionary, assuming that the dict is called urls
+
+    # for key in urls:
+    #     global s
+    #     s[key] = urls[key]
+    # #s holds all the ranks:urls in increasing order of their ranking
+    
+
+    
+    if dne:
+        global s 
+        s = {1: "page does not exist"}
+    else: 
+        global s 
+        s = mark
+
+
+   
+    #i only want to hold the top 5 for each result
+
+    if len(s) <= 5:
+        top5 = s
+    else:
+        counter = 0
+        top5 = dict()
+        while counter < 5:
+            wantedkey = next(iter(s))
+            top5[wantedkey] = s[wantedkey]
+            global s
+            del s[wantedkey]
+            counter = counter + 1
+
+
+
+    global searched
+    searched = searchKey
+    global ar
+    ar = keyWordCount
+
+
+    return template('anonsearchResultPage.html', searchResult=searched,
+                    displayArray=keyWordCount, sortedurl = top5)
+
 
 
 @route('/signedin', method='GET')
@@ -91,18 +247,11 @@ def ahome():
     return template('anonindexSearchPage.html')
 
 
-@route('/aresults', method='POST')
-def areturnResults():
-    # Take the key word
-    # split it
-    # count repeats
-    searchKey = request.forms.get('searchKey')
-    searchKey = searchKey.lower()
-    splitKey = searchKey.split(" ")
-    keyWordCount = {i: splitKey.count(i) for i in splitKey}
 
-    return template('anonsearchResultPage.html', searchResult=searchKey,
-                    displayArray=keyWordCount)
+
+
+
+
 
 
 
@@ -181,4 +330,5 @@ def returnResults():
         return template('searchResultPage.html', searchResult = searchKey,
                     displayArray = keyWordCount, top20=t20, EMAIL=name)
 
-run(app = app, host='0.0.0.0', port=80)
+run(app = app)
+#, host='0.0.0.0', port=80)

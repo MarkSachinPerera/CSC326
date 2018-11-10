@@ -1,6 +1,7 @@
 <html>
 <head>
 <title>Results Page </title>
+
 <style>
 td {
   border: 1px solid #8258FA;
@@ -38,6 +39,10 @@ first page just with different positioning */
   border-radius: 20px;
   outline: none;
 }
+
+a {
+margin : 20px;
+}
 </style>
 </head>
 <body>
@@ -67,20 +72,31 @@ and goes back to searchResultPage updating the two dictionaries accordingly  -->
   outline: none;">
 <!--   styling the little box that displays the searched text -->
  search for<b> "{{searchResult}}" </b></p>
-<table id="results" style="
-  border-collapse: collapse;
-  width: 70%;">
-<!--   table 1 for what just got searched -->
-<caption>In your search, the following was found:</caption>
-<tr>
-<td bgcolor'"#CECEF6" ><b>Word</b></td>
-<td bgcolor'"#CECEF6" ><b>Count</b></td>
-</tr>
-%for d, e in displayArray.items():
-	 <tr><td>{{d}}</td><td>{{e}}</td></tr>
+
+<!--i dont need the table anymore so it was deleted after this version -->
+
+%for rank , content in sortedurl.items():
+	<a style="margin:30px; font-size:45px;" href={{content}}> {{content}} </a>
+	</br>
+	</br>
+	</br>
+	</br>
+	</br>
 %end
-</table>
+
+
+
+
+<form action="/nextpage" method="post">
+	<input value="NEXT PAGE" type="submit"/>
+</form>
+
+
+
+
+
+
+
 
 </body>
 </html>
-
