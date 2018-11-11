@@ -16,23 +16,43 @@ import unicodedata
 rs = redis.Redis("localhost")
 resolved = rs.get('resolved')
 rank = rs.get('rank_url')
-rank = rs.get('rank_url')
 rank = ast.literal_eval(rank)
 resolved = ast.literal_eval(resolved)
 
 def generate_search_results(key):
 	#grab from db and convert to dicts
 
-	# results = []
+	results = {}
+	grab = []
 	searchkey = key.lower()
-
+	print searchkey
+	# print "MARKMARKMARK"
 	for i in resolved:
 		find_val = i.find(searchkey)
 		if find_val == 0:
 			# print i
 			# print "hi"
 			# print resolved[i]
-			return(resolved[i])
+			grab = resolved[i]
+			break
+
+	
+
+	# print results
+	j = 0
+	for i in grab:
+		# print i
+		if i in rank.keys():
+			# print " "
+			tempvar = i.encode('ascii','ignore')
+			# print type(tempvar)
+			results[j] = tempvar
+			j += 1
+			# results[temp[i]] = i
+	
+	# print results
+	# print "------"
+	return(results)
 
 def test():
 	j = 0

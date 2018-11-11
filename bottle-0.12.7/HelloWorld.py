@@ -8,24 +8,13 @@ import httplib2
 from beaker.middleware import SessionMiddleware
 import bottle
 from bottle import error
-import redis
-import ast
+import searchDB
 allinputs = dict()
 import json
-import unicodedata
 usermanager = dict()
-searched = "hi"
 ar = dict()
 s = dict()
-mark = dict()
-
-rs = redis.Redis("localhost")
-urls = rs.get("rank_url")
-urls = ast.literal_eval(urls)
-resolved = rs.get("resolved")
-
-
-
+searchedword = " "
 
 
 
@@ -107,54 +96,24 @@ def areturnResults():
     searchKey = request.forms.get('searchKey')
     searchKey = searchKey.lower()
     splitKey = searchKey.split(" ")
+    global searchedword
+    searchedword = searchKey.split(' ', 1)[0]
     keyWordCount = {i: splitKey.count(i) for i in splitKey}
-    word = next(iter(keyWordCount))
-    
 
-    #resolved
-    global resolved
-    resolved = ast.literal_eval(resolved)
-    uword = unicode(word, "utf-8")
-    listofurl = ()
-    if uword in resolved:
-        listofurl = resolved[uword]
+    print searchedword
+    urls = searchDB.generate_search_results(searchedword)
 
 
-
-    
-    print urls #the dict with everything 
-    print "==================================================="
-    print listofurl #list
-    for i in range(len(listofurl)):
-        if listofurl[i] in urls:
-            name = unicodedata.normalize('NFKD', listofurl[i]).encode('ascii','ignore')
-            global mark
-            mark[urls[listofurl[i]]]  = name
-            dne = False 
-    print "=============================hiiiiiiiiii======================"
-    print mark #list
-
-
-  
     #LAB 3 : Assuming that the dict with urls and their rank is sent to me here :
     #sort the dictionary, assuming that the dict is called urls
+    if len(urls) == 0:
+        return template('ask.html')
 
-    # for key in urls:
-    #     global s
-    #     s[key] = urls[key]
-    # #s holds all the ranks:urls in increasing order of their ranking
-    
+    for key in urls.iterkeys():
+        global s
+        s[key] = urls[key]
+    #s holds all the ranks:urls in increasing order of their ranking
 
-    
-    if dne:
-        global s 
-        s = {1: "page does not exist"}
-    else: 
-        global s 
-        s = mark
-
-
-   
     #i only want to hold the top 5 for each result
 
     if len(s) <= 5:
@@ -332,9 +291,3 @@ def returnResults():
 
 run(app = app)
 #, host='0.0.0.0', port=80)
-
-
-
-
-
-    
