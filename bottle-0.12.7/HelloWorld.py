@@ -120,7 +120,7 @@ def areturnResults():
         listofurl = resolved[uword]
 
 
-    
+
     
     print urls #the dict with everything 
     print "==================================================="
@@ -332,3 +332,9 @@ def returnResults():
 
 run(app = app)
 #, host='0.0.0.0', port=80)
+
+
+
+
+
+    

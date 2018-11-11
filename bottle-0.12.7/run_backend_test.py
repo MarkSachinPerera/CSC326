@@ -6,8 +6,10 @@ import operator
 def setup_Read(setserver = True):
     bot = crawler(None, "url-for-test.txt")
     bot.crawl(depth=1)
-    link = bot.get_link()
+    #marks the crawler run
 
+    #gets all the info from the crawler
+    link = bot.get_link()
     rank = pageranker.page_rank(link)
     doc_id_v_URL = bot.get_Doc_ID_v_URL()
     lexicon = bot.get_Lexicon()
@@ -29,6 +31,7 @@ def setup_Read(setserver = True):
         j += 1
 #     print rank_url
 
+        #upload to db
     if setserver:
         # print "here"
         rs = redis.Redis("localhost")
@@ -42,6 +45,7 @@ def setup_Read(setserver = True):
         rs.set("inverted_index",inverted_index)
 
 def delete_server():
+        #clear db
         rs = redis.Redis("localhost")
         # rs.delete("rank")
         rs.delete("resolved")
