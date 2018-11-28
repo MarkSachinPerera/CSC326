@@ -1,0 +1,61 @@
+###THIS IS LAB 1. GO BACK TO THE PREV DIRECTORY FOR LAB 2 INSTRUCTIONS###
+PLEASE REFER TO "test-new-crawler-functions.py" FOR TEST CODE
+THIS IS JUST A OVERVIEW OF WHAT THAT TEST CASES ARE AND HOW I 
+AM TESTING THE FUNCTIONALITY
+
+PLEASE USE THE FOLLOWING TO RUN THE SCRIPT
+$python test-new-crawler-functions.py
+
+ 
+		#the inital url given is my personal website
+		#3 main test will be done with 3 urls to ensure functionality 
+		#there are 3 tests in total
+
+####URLS####
+
+$ URL_1 = "https://marksachinperera.github.io/"
+$ URL_2 = "https://marksachinperera.github.io/ContactMe.html"
+$ URL_3 = "https://marksachinperera.github.io/AboutMe.html"
+
+#############################################################################################
+
+test 1 : get_inverted_index() : independent test
+
+check the number of times each id appears in the inverted index (1 appearence per word)
+
+IMPORTANT: EACH COUNT REPERSENTS A UNIQUE WORD
+
+Id 1 should appear 32 times 
+Id 5 should appear 37 times
+Id 4 should appear 198 times
+
+IMPORTANT: IF THE SCRIPT KEEPS FAILING DURING SETUP JUST FORCE THE VALUES AT MARKED LOCATIONS
+WITH A "*"  (This should not happen)
+
+
+
+#############################################################################################
+
+test 2 : get_resovled_inverted_index() : independent test
+
+URL 1 is expected to print 32 unique words
+
+  jpg, height , done , have , home, portfolio, alt , web , le , img , personal , mark , width , 
+  1500 ,  styles , picture , resume , showing , welcome , hi , img_2315 , perera ,
+  projects , me , src , about , name , 1800 , this , contact , my , page 
+
+
+URL 2 is expected to print 37 unique words
+
+feedback, links , ca , coming , soon , jpg , height , home , portfolio , alt ,
+ gmail , information , le , img , personal , section , mark , width , 1500 , mail ,
+  email , marksachin12 , styles , picture , welcome , img_2315 , perera , me , src, 
+  about, 1800 , utoronto , work , marksa , contact , quick , com 
+
+#############################################################################################
+
+test 3 : dependent test : URL 2 
+
+5 random items from the inverted index should have the same urls as the resolved index
+
+

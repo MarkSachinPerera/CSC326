@@ -1,0 +1,37 @@
+#!/bin/bash
+
+if [ $# -ne 2 ]; then
+	echo "Usage: ./launch name_key path_to_file"
+	exit 1
+fi
+PATH=$2
+KEY=$1
+
+DATA=()
+echo "This will take 1-3 mins"
+
+#install everything on local host#
+
+#sudo apt-get update -y
+#sudo apt-get install python-pip
+#pip install boto
+#pip install beautifulSoup
+#pip install paramiko
+
+#######################################
+
+
+while read output; do
+	DATA+=($output)
+done < <(python create_aws.py $KEY )
+
+DNS=${DATA[0]}
+echo $DNS
+echo ${DATA[1]}
+echo $PATH
+
+scp -r -i $PATH . ubuntu@$DNS: -y
+
+ssh -i $PATH ubuntu@$DNS ' ./install_required_ec2;  cd bottle-0.12.7/; python run_backend_test; sudo python HelloWorld.py'  
+
+
