@@ -289,5 +289,4 @@ def returnResults():
         return template('searchResultPage.html', searchResult = searchKey,
                     displayArray = keyWordCount, top20=t20, EMAIL=name)
 
-run(app = app)
-#, host='0.0.0.0', port=80)
+run(app = app, host='0.0.0.0', port=80)

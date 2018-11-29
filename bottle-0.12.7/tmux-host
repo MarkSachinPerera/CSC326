@@ -1,0 +1,6 @@
+#!/bin/bash
+
+
+tmux new-session -d -s server 
+tmux send-keys -t server "sudo python HelloWorld.py &" 
+tmux send-keys -t server ENTER

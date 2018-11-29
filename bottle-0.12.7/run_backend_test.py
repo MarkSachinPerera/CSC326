@@ -35,13 +35,20 @@ def setup_Read(setserver = True):
     if setserver:
         # print "here"
         rs = redis.Redis("localhost")
+        rank_url = str(rank_url)
         rs.set("rank_url",rank_url)
+        resolved = str(resolved)
         rs.set("resolved", resolved)
+        title = str(title)
         rs.set("title",title)
+        text = str(text)
         rs.set("text",text)
         # rs.set("rank",rank)
+        doc_id_v_URL = str(doc_id_v_URL)
         rs.set("doc_id_v_URL",doc_id_v_URL)
+        lexicon = str(lexicon)
         rs.set("lexicon",lexicon)
+        inverted_index = str(inverted_index)
         rs.set("inverted_index",inverted_index)
 
 def delete_server():

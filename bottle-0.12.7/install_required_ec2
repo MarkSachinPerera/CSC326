@@ -1,0 +1,26 @@
+sudo apt-get update -y
+sudo apt-get install python-pip -y
+sudo apt-get install python3-pip -y
+sudo apt-get install python-dev -y
+sudo apt-get install tmux -y
+sudo apt-get install redis-server -y
+sudo apt-get install redis-tools -y
+
+pip install beautifulSoup --user
+pip install oauth2client --user
+pip install google-api-python-client --user
+pip install httplib2 --user
+pip install redis --user
+pip install bottle --user
+pip install cachetools --user
+pip install goole-api-python-client --user
+pip install goole-api-python-client-helpers --user
+pip install uritemplate.py --user
+pip install boto --user
+pip install beautifulSoup --user
+pip install python-dev --user
+pip install numpy --user
+pip3 install numpy --user
+pip install beaker --user
+pip install paramiko --user
+pip install oauth2client

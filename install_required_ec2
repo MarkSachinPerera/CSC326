@@ -1,8 +1,0 @@
-
-sudo apt-get update -y
-sudo apt-get install python-pip -y
-pip install beautifulSoup --user
-pip install oauth2client --user
-pip install google-api-python-client --user
-pip install httplib2 --user
-pip install beaker --user
