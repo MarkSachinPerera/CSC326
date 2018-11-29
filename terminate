@@ -2,7 +2,7 @@
 
 
 if [ $# -ne 1 ]; then
-	echo "Usage: ./terminate id_from_launch"
+	echo "Usage: ./terminate i-xxxxxx"
     echo "can be found in id.log"
 	exit 1
 fi
