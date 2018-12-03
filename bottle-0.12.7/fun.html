@@ -1,0 +1,58 @@
+<html>
+<head>
+    <title> LET'S HAVE FUN </title>
+    <style>
+    .search_button{
+/* info regarding how the search button should look like */
+  font-size:12px;
+  font-weight: bold;
+  color: #fff;
+  font-weight: bold;
+  width: 75px;
+  height: 50px;
+  background: #B22222;
+  border: #000;
+  border-radius: 20px;
+
+}
+
+ .goback_button{
+/* info regarding how the search button should look like */
+  font-size:12px;
+  font-weight: bold;
+  color: #fff;
+  font-weight: bold;
+  width: 100px;
+  height: 50px;
+  background: #CD5C5C;
+  border: #000;
+  border-radius: 20px;
+
+}
+</style>
+</head>
+
+
+<body style=" background: linear-gradient(#ffffff 50%, rgba(255,255,255,0) 0) 0 0, radial-gradient(circle closest-side, #FFFFFF 53%, rgba(255,255,255,0) 0) 0 0, radial-gradient(circle closest-side, #FFFFFF 50%, rgba(255,255,255,0) 0) 55px 0 #48B; background-size: 110px 200px; background-repeat: repeat-x;">
+</br>
+	</br>
+
+ <font face = "Comic sans MS" size =" 5">CLICK BELOW TO HAVE SOME FUN!</font><br />
+</br>
+	</br>
+</br>
+	</br>
+</br>
+	</br>
+
+%for rank , content in funlist.items():
+    <form action={{content}}>
+        <input type="submit" class="search_button" value="CLICK ME!" />
+    </form>
+%end
+
+<form action="/signout" method="get">
+	<input value="BACK TO TARK" class = "goback_button" type="submit"/>
+</form>
+
+</body>

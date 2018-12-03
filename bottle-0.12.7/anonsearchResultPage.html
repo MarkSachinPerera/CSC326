@@ -3,20 +3,10 @@
 <title>Results Page </title>
 
 <style>
-td {
-  border: 1px solid #8258FA;
-  padding: 7px;
-  text-align: center;
-}
-
-tr:nth-child(1) {
-/* first row of each table is for what each coloumns will be so i changed the color */
-    background-color: CECEF6;
-}
 .input{
 /* info regarding how the search bar should look like, basically same one as
 first page just with different positioning */
-  width: 350px;
+  width: 93%;
   background: #E0E6F8;
   font-size: 10 px;
   border: 0;
@@ -25,6 +15,8 @@ first page just with different positioning */
   padding: 15px 30px;
   color: #111;
   outline: none;
+  margin-left: auto;
+  margin-right: auto;
 }
 .search_button{
 /* info regarding how the search button should look like */
@@ -38,21 +30,37 @@ first page just with different positioning */
   border: #000;
   border-radius: 20px;
   outline: none;
+  margin-left: auto;
+  margin-right: auto;
 }
-
 a {
 margin : 20px;
 }
 </style>
 </head>
-<body>
+<body style="background:
+    radial-gradient(black 3px, transparent 4px),
+    radial-gradient(black 3px, transparent 4px),
+    linear-gradient(#fff 4px, transparent 0),
+    linear-gradient(45deg, transparent 74px, transparent 75px, #a4a4a4 75px, #a4a4a4 76px, transparent 77px, transparent 109px),
+    linear-gradient(-45deg, transparent 75px, transparent 76px, #a4a4a4 76px, #a4a4a4 77px, transparent 78px, transparent 109px),
+    #fff;">
 
 <!-- same thing as index page, this section gets the string from the user
 and goes back to searchResultPage updating the two dictionaries accordingly  -->
-<form action="/signedin" method="get">
-	<input value="SIGN IN" type="submit"/>
+<form action="/signedin"  method="get">
+	<input value="SIGN IN" class="search_button" type="submit"/>
 </form>
 
+<!--our animated logo-->
+<img src="/static/tark.gif" alt="TARK Icon" style="position: relative;
+  top: 20%;
+  left:40%;
+  width:10em;
+  height: 10em;
+">
+
+<!--the search bar -->
 <form action="/aresults" method="post">
     <div class="container">
 	<input name="searchKey" class="input" placeholder="What are you looking for today"
@@ -61,7 +69,7 @@ and goes back to searchResultPage updating the two dictionaries accordingly  -->
 	</form>
 	</div>
 <p style="
-  width: 350px;
+ font: Georgia;
   border: 3px solid red;
   background: #A9E2F3;
   padding: 15px 30px;
@@ -70,22 +78,15 @@ and goes back to searchResultPage updating the two dictionaries accordingly  -->
   color: #111;
   font-size: 10 px;
   outline: none;">
-<!--   styling the little box that displays the searched text -->
  search for<b> "{{searchResult}}" </b></p>
 
-<!--i dont need the table anymore so it was deleted after this version -->
-
 %for rank , content in sortedurl.items():
-	<a style="margin:30px; font-size:45px;" href={{content}}> {{content}} </a>
+	<a style="margin:30px; font-size:15px;margin-left: auto;
+    margin-right: auto;" href={{content}}> {{content}} </a>
 	</br>
 	</br>
-	</br>
-	</br>
-	</br>
+
 %end
-
-
-
 
 <form action="/nextpage" method="post">
 	<input value="NEXT PAGE" type="submit"/>

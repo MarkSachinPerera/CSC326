@@ -58,7 +58,7 @@ first page just with different positioning */
 img {
 /* positioning of the picture */
   position: absolute;
-  top: 25%;
+  top: %;
   left:31%;
 }
 </style>
@@ -69,9 +69,11 @@ img {
 <!-- same thing as index page, this section gets the string from the user
 and goes back to searchResultPage updating the two dictionaries accordingly  -->
 <form action="/signedin" method="get">
-	<input value="SIGN IN" type="submit"/>
+	<input value="SIGN IN" type="submit" class="search_button"/>
 </form>
-	<img src="/static/TARK.jpg" alt="TARK Icon"style="width:500px;height:300px;">
+	<img src="/static/tark.gif" alt="TARK Icon"style="position: absolute;
+  top: 20%;
+  left:31%;">
 	<form action="/aresults" method="post">
 	<div class="searchbarposition">
 	<input name="searchKey" class="input" placeholder="What are you looking for today" type="text" />
